@@ -5,8 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Block
 {
-	private final float WIDTH = 1f;
-	private final float HEIGHT = .25f;
+	public static final float WIDTH = 1f;
+	public static final float HEIGHT = .25f;
+
 
 	private final Rectangle bounds;
 	public Rectangle getBounds() { return this.bounds; }
