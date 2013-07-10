@@ -1,5 +1,8 @@
 package org.doublelong.entities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +13,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Ball
 {
+	private final Board board;
+
+	public enum States {ACTIVE}
+	public static Map<States, Boolean> states = new HashMap<Ball.States, Boolean>();
+	static {states.put(States.ACTIVE, false);}
+	public Boolean isActive() { return states.get(States.ACTIVE);}
+	public void setActive(Boolean b) {states.put(States.ACTIVE, b);}
 
 	public static final float SIZE = .25f;
 
@@ -21,9 +31,11 @@ public class Ball
 
 	private final ShapeRenderer renderer;
 
-	public Ball(Vector2 position)
+	public Ball(Board board)
 	{
-		this.position = position;
+		this.board = board;
+		this.setActive(false);
+		this.position = this.board.paddle.getBallPosition();
 		this.bounds = new Rectangle(this.position.x, this.position.y, SIZE, SIZE);
 		this.renderer = new ShapeRenderer();
 	}
@@ -37,7 +49,25 @@ public class Ball
 		this.renderer.filledRect(this.position.x, this.position.y, this.bounds.height, this.bounds.width);
 
 		this.renderer.end();
+	}
 
+	public void update(float delta)
+	{
+		// if ball is active, move it around
+		this.processInput(delta);
+		if(this.isActive())
+		{
+
+		}
+		else // it's not active, it should "attached" to the paddle
+		{
+			this.position.x = this.board.paddle.getBallPosition().x;
+			this.position.y = this.board.paddle.getBallPosition().y;
+		}
+	}
+
+	public void processInput(float delta)
+	{
 
 	}
 }

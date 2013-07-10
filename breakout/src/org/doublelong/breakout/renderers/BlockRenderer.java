@@ -12,12 +12,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class BlockRenderer
 {
+	private final Board board;
+
 	private final Block[] blocks;
 
 	private final ShapeRenderer renderer;
 
-	public BlockRenderer()
+	public BlockRenderer(Board board)
 	{
+		this.board = board;
 		this.blocks = generateBlocks();
 		this.renderer = new ShapeRenderer();
 	}

@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Paddle
 {
+	private final Board board;
+
 	private final float WIDTH = 1.5f;
 	private final float HEIGHT = .25f;
 	public final float SPEED = .01f;
@@ -27,12 +29,13 @@ public class Paddle
 
 	public Color color = Color.BLUE;
 
-	public Paddle()
+	public Paddle(Board board)
 	{
+		this.board = board;
 		this.position = new Vector2(Board.BOARD_WIDTH / 2 - WIDTH / 2, 0.5f);
 		this.bounds = new Rectangle(this.position.x, this.position.y, WIDTH, HEIGHT);
 		this.renderer = new PaddleRenderer(this);
-		this.controller = new PaddleController(this);
+		this.controller = new PaddleController(this.board);
 	}
 
 	public void render(SpriteBatch batch, OrthographicCamera cam)
