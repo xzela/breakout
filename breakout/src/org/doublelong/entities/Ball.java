@@ -15,13 +15,14 @@ public class Ball
 {
 	private final Board board;
 
-	public enum States {ACTIVE}
+	public enum States { ACTIVE }
 	public static Map<States, Boolean> states = new HashMap<Ball.States, Boolean>();
 	static {states.put(States.ACTIVE, false);}
 	public Boolean isActive() { return states.get(States.ACTIVE);}
 	public void setActive(Boolean b) {states.put(States.ACTIVE, b);}
 
 	public static final float SIZE = .25f;
+	private static final float SPEED = 2f;
 
 	private final Vector2 position;
 	public Vector2 getPosition() { return this.position; }
@@ -31,9 +32,13 @@ public class Ball
 
 	private final ShapeRenderer renderer;
 
+	private final float ballSpeed;
+
 	public Ball(Board board)
 	{
 		this.board = board;
+		this.ballSpeed = SPEED;
+
 		this.setActive(false);
 		this.position = this.board.paddle.getBallPosition();
 		this.bounds = new Rectangle(this.position.x, this.position.y, SIZE, SIZE);
@@ -54,20 +59,16 @@ public class Ball
 	public void update(float delta)
 	{
 		// if ball is active, move it around
-		this.processInput(delta);
 		if(this.isActive())
 		{
-
+			this.position.add(this.ballSpeed * this.position.x * delta, this.ballSpeed * this.position.y * delta);
+			this.bounds.setX(this.position.x);
+			this.bounds.setY(this.position.y);
 		}
 		else // it's not active, it should "attached" to the paddle
 		{
 			this.position.x = this.board.paddle.getBallPosition().x;
 			this.position.y = this.board.paddle.getBallPosition().y;
 		}
-	}
-
-	public void processInput(float delta)
-	{
-
 	}
 }

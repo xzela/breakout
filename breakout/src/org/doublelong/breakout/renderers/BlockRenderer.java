@@ -3,7 +3,6 @@ package org.doublelong.breakout.renderers;
 import org.doublelong.entities.Block;
 import org.doublelong.entities.Board;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -25,13 +24,20 @@ public class BlockRenderer
 		this.renderer = new ShapeRenderer();
 	}
 
+	public BlockRenderer(Board board, Block[] blocks)
+	{
+		this.board = board;
+		this.blocks = blocks;
+		this.renderer = new ShapeRenderer();
+	}
+
 	public void render(SpriteBatch batch, OrthographicCamera cam)
 	{
 		this.renderer.setProjectionMatrix(cam.combined);
 		this.renderer.begin(ShapeType.FilledRectangle);
 		for (Block block : this.blocks)
 		{
-			this.renderer.setColor(Color.RED);
+			this.renderer.setColor(block.getColor());
 			this.renderer.filledRect(block.getPosition().x,
 					block.getPosition().y,
 					block.getBounds().width,

@@ -61,6 +61,7 @@ public class PaddleController
 			if (!this.board.ball.isActive())
 			{
 				this.board.ball.setActive(true);
+				this.board.ball.getPosition().y = 1f;
 			}
 
 		}
