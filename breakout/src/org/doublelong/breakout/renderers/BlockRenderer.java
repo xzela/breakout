@@ -14,6 +14,7 @@ public class BlockRenderer
 	private final Board board;
 
 	private final Block[] blocks;
+	public Block[] getBlocks() {return this.blocks; }
 
 	private final ShapeRenderer renderer;
 

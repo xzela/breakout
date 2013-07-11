@@ -50,7 +50,6 @@ public class Board
 	{
 		Block[] walls = new Block[3];
 		walls[0] = new Block(new Vector2(0,0), Board.BOARD_HEIGHT, .25f); //left wall
-		//walls[1] = new Block(new Vector2(0,0), .25f, Board.BOARD_WIDTH); //bottom wall
 		walls[1] = new Block(new Vector2(0, Board.BOARD_HEIGHT - .25f), .25f, Board.BOARD_WIDTH); //top wall
 		walls[2] = new Block(new Vector2(Board.BOARD_WIDTH - .25f,0), Board.BOARD_HEIGHT, .25f); //right wall
 		return walls;

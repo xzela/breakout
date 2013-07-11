@@ -17,12 +17,17 @@ public class Paddle
 	private final float HEIGHT = .25f;
 	public final float SPEED = .01f;
 
-
 	private final PaddleRenderer renderer;
 	public final PaddleController controller;
 
 	private final Vector2 position;
 	public Vector2 getPosition() {return this.position;}
+
+	private final Vector2 velocity = new Vector2();
+	public Vector2 getVelocity() { return this.velocity;}
+
+	private final Vector2 acceleration = new Vector2();
+	public Vector2 getAcceleration() { return this.acceleration; }
 
 	private final Rectangle bounds;
 	public Rectangle getBounds() { return this.bounds; }
