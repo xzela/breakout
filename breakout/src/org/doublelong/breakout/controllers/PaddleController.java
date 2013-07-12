@@ -75,33 +75,39 @@ public class PaddleController
 	 * @param delta
 	 * @return
 	 */
-	public boolean collides(float delta)
+	public void collides(float delta)
 	{
 		// transform velocity to "frame-time"
 		this.board.paddle.getVelocity().mul(delta);
 		Rectangle r = rectPool.obtain();
+		// set the fake rectangle to the same bounds as the paddle
 		r.set(this.board.paddle.getBounds());
+		// now increase the fake rectangle x position to the paddles x velocity
 		r.x += this.board.paddle.getVelocity().x;
 
 		Block[] blocks = this.board.walls.getBlocks();
 		for (Block block : blocks)
 		{
-			// find a block that might overlap the bounder
+			// find a block that might overlap the fake rectangle
 			if (r.overlaps(block.getBounds()))
 			{
+				// set the paddle velocity to 0
 				this.board.paddle.getVelocity().x = 0f;
-				return true;
+				break;
 			}
 		}
+		// ok done with block stuff
+
+		// set the fake rectangle x position to the current paddle x position
 		r.x = this.board.paddle.getPosition().x;
+		// add the paddle velocity (which may be ZERO (0) at this point) to the paddles position
 		this.board.paddle.getPosition().add(this.board.paddle.getVelocity());
+		// set the rest of the paddle bounds properties.
 		this.board.paddle.getBounds().setX(this.board.paddle.getPosition().x);
 		this.board.paddle.getBounds().setY(this.board.paddle.getPosition().y);
 
 		// transform velocity back to base units, don't have this things will break
 		this.board.paddle.getVelocity().mul(1 / delta);
-
-		return false;
 	}
 
 	public void processInput(float delta)
@@ -139,7 +145,12 @@ public class PaddleController
 			if (!this.board.ball.isActive())
 			{
 				this.board.ball.setActive(true);
-				this.board.ball.getPosition().y = 1f;
+				this.board.ball.getVelocity().y = 1f;
+			}
+			else
+			{
+
+				this.board.ball.reset();
 			}
 		}
 	}
