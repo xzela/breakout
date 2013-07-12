@@ -24,7 +24,7 @@ public class Ball
 
 	public static final float SIZE = .25f;
 	private static final float SPEED = 2f;
-	private static final float MAX_VEL = 10f;
+	private static final float MAX_VEL = 5f;
 	private final float ACCELERATION = 40f;
 
 	private final Vector2 velocity = new Vector2();
@@ -85,41 +85,9 @@ public class Ball
 			// check for collisions!
 			this.acceleration.mul(delta);
 			this.collides(delta);
-			if (this.acceleration.y > MAX_VEL)
-			{
-				this.acceleration.y = MAX_VEL;
-			}
-			if (this.acceleration.y < -MAX_VEL)
-			{
-				this.acceleration.y = -MAX_VEL;
-			}
-			if (this.acceleration.x > MAX_VEL)
-			{
-				this.acceleration.x = MAX_VEL;
-			}
-			if (this.acceleration.x < -MAX_VEL)
-			{
-				this.acceleration.x = -MAX_VEL;
-			}
-
 
 			this.velocity.add(this.acceleration.x, this.acceleration.y);
-			if(this.velocity.y > MAX_VEL)
-			{
-				this.velocity.y = MAX_VEL;
-			}
-			if(this.velocity.y < -MAX_VEL)
-			{
-				this.velocity.y = -MAX_VEL;
-			}
-			if(this.velocity.x > MAX_VEL)
-			{
-				this.velocity.x = MAX_VEL;
-			}
-			if(this.velocity.x < -MAX_VEL)
-			{
-				this.velocity.x = -MAX_VEL;
-			}
+			this.capVelocity();
 			if (this.position.y < 0 || this.position.y > Board.BOARD_HEIGHT)
 			{
 				this.reset();
@@ -206,5 +174,25 @@ public class Ball
 		this.bounds.setY(this.position.y);
 
 		this.velocity.mul(1 / delta);
+	}
+
+	private void capVelocity()
+	{
+		if(this.velocity.y > MAX_VEL)
+		{
+			this.velocity.y = MAX_VEL;
+		}
+		if(this.velocity.y < -MAX_VEL)
+		{
+			this.velocity.y = -MAX_VEL;
+		}
+		if(this.velocity.x > MAX_VEL)
+		{
+			this.velocity.x = MAX_VEL;
+		}
+		if(this.velocity.x < -MAX_VEL)
+		{
+			this.velocity.x = -MAX_VEL;
+		}
 	}
 }
