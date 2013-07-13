@@ -16,12 +16,12 @@ public class BlockRenderer
 	private final Block[] blocks;
 	public Block[] getBlocks() {return this.blocks; }
 
-	private final ShapeRenderer renderer;
+	protected final ShapeRenderer renderer;
 
 	public BlockRenderer(Board board)
 	{
 		this.board = board;
-		this.blocks = generateBlocks();
+		this.blocks = generateBlocks(10);
 		this.renderer = new ShapeRenderer();
 	}
 
@@ -38,33 +38,35 @@ public class BlockRenderer
 		this.renderer.begin(ShapeType.FilledRectangle);
 		for (Block block : this.blocks)
 		{
-			this.renderer.setColor(block.getColor());
-			this.renderer.filledRect(block.getPosition().x,
-					block.getPosition().y,
-					block.getBounds().width,
-					block.getBounds().height);
+			if (!block.isDestroyed())
+			{
+				this.renderer.setColor(block.getColor());
+				this.renderer.filledRect(block.getPosition().x,
+						block.getPosition().y,
+						block.getBounds().width,
+						block.getBounds().height);
+			}
 		}
 		this.renderer.end();
 	}
 
-	private Block[] generateBlocks()
+	private Block[] generateBlocks(int count)
 	{
-		float y = Board.BOARD_HEIGHT - Block.HEIGHT * 2;
-		float x = 0f;
-		Block[] temp = new Block[10];
-
-		temp[0] = new Block(new Vector2(0.5f, 12f - .5f));
-		temp[1] = new Block(new Vector2(2f, 12f - .5f));
-		temp[2] = new Block(new Vector2(3.5f, 12f - .5f));
-		temp[3] = new Block(new Vector2(5f, 12f - .5f));
-		temp[4] = new Block(new Vector2(6.5f, 12f - .5f));
-
-		temp[5] = new Block(new Vector2(1f, 12f - 1f));
-		temp[6] = new Block(new Vector2(2.5f, 12f - 1f));
-		temp[7] = new Block(new Vector2(4f, 12f - 1f));
-		temp[8] = new Block(new Vector2(5.5f, 12f - 1f));
-		temp[9] = new Block(new Vector2(7f, 12f - 1f));
-
+		float x = 0 + .5f;
+		float y = Board.BOARD_HEIGHT - 2f;
+		Block[] temp = new Block[count];
+		for (int i = 0; i < count; i++)
+		{
+			if (x + Block.WIDTH > Board.BOARD_WIDTH - .25f)
+			{
+				x = 0 + .5f;
+				y = y - 1;
+			}
+			Vector2 v = new Vector2(x, y);
+			System.out.println(v);
+			temp[i] = new Block(v);
+			x += Block.WIDTH + .25f;
+		}
 		return temp;
 	}
 }

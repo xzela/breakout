@@ -128,19 +128,18 @@ public class Ball
 		r.x += this.velocity.x;
 
 		// bouce off walls
-		Block[] blocks = this.board.walls.getBlocks();
-		for (Block block : blocks)
+		for (Wall wall : this.board.walls.getBlocks())
 		{
-			if (r.overlaps(block.getBounds()))
+			if (r.overlaps(wall.getBounds()))
 			{
-
-				if (block.getName().equals("left") || block.getName().equals("right"))
+				// walls have names, bricks don't
+				if (wall.getName().equals("left") || wall.getName().equals("right"))
 				{
 					this.direction_x *= -1;
 					this.velocity.x = -this.velocity.x;
 					this.acceleration.x = this.direction_x * 1f;
 				}
-				if (block.getName().equals("top"))
+				if (wall.getName().equals("top"))
 				{
 					this.direction_y *= -1;
 					this.velocity.y = -this.velocity.y;
@@ -157,14 +156,43 @@ public class Ball
 				this.acceleration.x = this.direction_x * 1f;
 				this.acceleration.y = this.direction_y * 1f;
 			}
+		}
 
+		// detected brick collisions
+		for (Block brick : this.board.bricks.getBlocks())
+		{
+			if (r.overlaps(brick.getBounds()) && !brick.isDestroyed())
+			{
+				brick.setDestroyed(true);
+				this.board.destroyedBricks = this.board.destroyedBricks + 1;
+				this.direction_x *= 1;
+				//this.velocity.x = this.velocity.x;
+				this.acceleration.x = this.direction_x * this.velocity.x;
+
+				this.direction_y *= -1;
+				this.velocity.y = -this.velocity.y;
+				this.acceleration.y += this.direction_y;
+
+
+			}
+			else
+			{
+				this.acceleration.x = this.direction_x * 1f;
+				this.acceleration.y = this.direction_y * 1f;
+			}
 		}
 
 		if (r.overlaps(this.board.paddle.getBounds()))
 		{
+
 			this.direction_y *= -1f;
 			this.velocity.y = -this.velocity.y;
 			this.acceleration.y = this.direction_y * 1f;
+
+			if (this.board.destroyedBricks == this.board.bricks.getBlocks().length)
+			{
+				this.reset();
+			}
 		}
 
 		r.x = this.position.x;

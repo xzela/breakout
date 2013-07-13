@@ -6,11 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Block
 {
-	public static final float WIDTH = 1f;
-	public static final float HEIGHT = .25f;
+	public static final float WIDTH = 2f;
+	public static final float HEIGHT = .5f;
 
+	private boolean destroyed = false;
+	public boolean isDestroyed() {return this.destroyed; }
+	public void setDestroyed(boolean b) { this.destroyed = b; }
 
-	private final Color color;
+	protected Color color;
 	public Color getColor() { return this.color; }
 
 	private final Rectangle bounds;
@@ -19,29 +22,10 @@ public class Block
 	private final Vector2 position;
 	public Vector2 getPosition() {return this.position; }
 
-	private final String name;
-	public String getName() { return this.name; }
-
-
 	public Block(Vector2 position)
 	{
 		this.color = Color.RED;
-		this.name = "brick";
 		this.position = position;
 		this.bounds = new Rectangle(this.position.x, this.position.y, WIDTH, HEIGHT);
-	}
-
-	/**
-	 * 
-	 * @param position
-	 * @param height
-	 * @param width
-	 */
-	public Block(Vector2 position, float height, float width, String name)
-	{
-		this.name = name;
-		this.color = Color.ORANGE;
-		this.position = position;
-		this.bounds = new Rectangle(this.position.x, this.position.y, width, height);
 	}
 }

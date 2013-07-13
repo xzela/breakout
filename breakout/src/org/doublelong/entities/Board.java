@@ -2,11 +2,11 @@ package org.doublelong.entities;
 
 import org.doublelong.breakout.BreakoutGame;
 import org.doublelong.breakout.renderers.BlockRenderer;
+import org.doublelong.breakout.renderers.WallRenderer;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 public class Board
 {
@@ -16,9 +16,9 @@ public class Board
 	private final BreakoutGame game;
 	public final Paddle paddle;
 	public final Ball ball;
-	public final BlockRenderer blocks;
-	public final BlockRenderer walls;
-
+	public final BlockRenderer bricks;
+	public final WallRenderer walls;
+	public int destroyedBricks = 0;
 
 	// not sure if this will do anything
 	public final static Rectangle getBounds = new Rectangle(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
@@ -28,15 +28,15 @@ public class Board
 		this.game = game;
 		this.paddle = new Paddle(this);
 		this.ball = new Ball(this);
-		this.blocks = new BlockRenderer(this);
-		this.walls = new BlockRenderer(this, this.renderWalls());
+		this.bricks = new BlockRenderer(this);
+		this.walls = new WallRenderer(this);
 	}
 
 	public void render(SpriteBatch batch, OrthographicCamera cam)
 	{
 		this.paddle.render(batch, cam);
 		this.ball.render(batch, cam);
-		this.blocks.render(batch, cam);
+		this.bricks.render(batch, cam);
 		this.walls.render(batch, cam);
 	}
 
@@ -46,12 +46,4 @@ public class Board
 		this.ball.update(delta);
 	}
 
-	private Block[] renderWalls()
-	{
-		Block[] walls = new Block[3];
-		walls[0] = new Block(new Vector2(0,0), Board.BOARD_HEIGHT, .25f, "left"); //left wall
-		walls[1] = new Block(new Vector2(0, Board.BOARD_HEIGHT - .25f), .25f, Board.BOARD_WIDTH, "top"); //top wall
-		walls[2] = new Block(new Vector2(Board.BOARD_WIDTH - .25f,0), Board.BOARD_HEIGHT, .25f, "right"); //right wall
-		return walls;
-	}
 }

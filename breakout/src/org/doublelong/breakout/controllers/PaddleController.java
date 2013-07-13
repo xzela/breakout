@@ -147,11 +147,6 @@ public class PaddleController
 				this.board.ball.setActive(true);
 				this.board.ball.getVelocity().y = 1f;
 			}
-			else
-			{
-
-				this.board.ball.reset();
-			}
 		}
 	}
 
