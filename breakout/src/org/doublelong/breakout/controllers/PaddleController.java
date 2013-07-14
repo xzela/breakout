@@ -145,7 +145,7 @@ public class PaddleController
 			if (!this.board.ball.isActive())
 			{
 				this.board.ball.setActive(true);
-				this.board.ball.getVelocity().y = 1f;
+				this.board.ball.getVelocity().y = 0f;
 			}
 		}
 	}

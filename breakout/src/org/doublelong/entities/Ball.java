@@ -91,9 +91,21 @@ public class Ball
 
 			this.velocity.add(this.acceleration.x, this.acceleration.y);
 			this.capVelocity();
+			// has the ball gone off the screen, (dropped from the bottom?)
 			if (this.position.y < 0 || this.position.y > Board.BOARD_HEIGHT)
 			{
-				this.reset();
+				// remove a ball from the player
+				this.board.balls -= 1;
+				if (this.board.balls < 0)
+				{
+					// set the end screen
+					this.board.game.endBreakoutGame();
+				}
+				else
+				{
+					this.reset();
+				}
+
 			}
 		}
 		else // it's not active, it should "attached" to the paddle
@@ -167,6 +179,8 @@ public class Ball
 			if (r.overlaps(brick.getBounds()) && !brick.isDestroyed())
 			{
 				brick.setDestroyed(true);
+				this.board.player_score += 100;
+
 				this.sound.play(1f);
 
 				this.board.destroyedBricks = this.board.destroyedBricks + 1;
