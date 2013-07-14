@@ -3,6 +3,8 @@ package org.doublelong.entities;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -46,6 +48,7 @@ public class Ball
 	private int direction_x = 1;
 
 	private final ShapeRenderer renderer;
+	private final Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/soccer.bounce.mp3"));
 
 	private final Pool<Rectangle> rectPool = new Pool<Rectangle>() {
 		@Override
@@ -164,6 +167,8 @@ public class Ball
 			if (r.overlaps(brick.getBounds()) && !brick.isDestroyed())
 			{
 				brick.setDestroyed(true);
+				this.sound.play(1f);
+
 				this.board.destroyedBricks = this.board.destroyedBricks + 1;
 				this.direction_x *= 1;
 				//this.velocity.x = this.velocity.x;
