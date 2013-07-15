@@ -3,13 +3,14 @@ package org.doublelong.breakout.screens;
 import org.doublelong.breakout.BreakoutGame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-public class MenuScreen extends AbstractScreen
+public class MenuScreen implements Screen
 {
 	private final BreakoutGame game;
 	private final SpriteBatch batch;
