@@ -3,12 +3,13 @@ package org.doublelong.breakout.screens;
 import org.doublelong.breakout.BreakoutGame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-public class MenuScreen implements Screen
+public class MenuScreen extends AbstractScreen
 {
 	private final BreakoutGame game;
 	private final SpriteBatch batch;
@@ -27,7 +28,9 @@ public class MenuScreen implements Screen
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		this.game.startBreakoutGame();
+		TextButton button = new TextButton("Hello", new Skin());
+
+		//this.game.startBreakoutGame();
 	}
 
 	@Override
