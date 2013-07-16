@@ -211,6 +211,7 @@ public class Ball
 			if (this.board.destroyedBricks == this.board.bricks.getBlocks().length)
 			{
 				this.reset();
+				this.board.game.endBreakoutGame();
 			}
 		}
 
