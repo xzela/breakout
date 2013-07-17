@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -26,7 +27,7 @@ public class Ball
 
 	public static final float SIZE = .25f;
 	private static final float SPEED = 2f;
-	private static final float MAX_VEL = 5f;
+	private float max_vel = 5f;
 	private final float ACCELERATION = 40f;
 
 	private final Vector2 velocity = new Vector2();
@@ -50,6 +51,9 @@ public class Ball
 	private final ShapeRenderer renderer;
 	private final Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/soccer.bounce.mp3"));
 
+	private final SpriteBatch batch;
+	private final BitmapFont font;
+
 	private final Pool<Rectangle> rectPool = new Pool<Rectangle>() {
 		@Override
 		protected Rectangle newObject()
@@ -67,6 +71,13 @@ public class Ball
 		this.position = this.board.paddle.getBallPosition();
 		this.bounds = new Rectangle(this.position.x, this.position.y, SIZE, SIZE);
 		this.renderer = new ShapeRenderer();
+
+
+		// local debugging properties
+
+		this.batch = new SpriteBatch();
+		this.font = new BitmapFont();
+
 	}
 
 	public void render(SpriteBatch batch, OrthographicCamera cam)
@@ -115,6 +126,7 @@ public class Ball
 			this.bounds.setX(this.position.x);
 			this.bounds.setY(this.position.y);
 		}
+		this.debugBall();
 	}
 
 	public void reset()
@@ -129,7 +141,7 @@ public class Ball
 		this.velocity.y = 0f;
 		this.acceleration.x = 0f;
 		this.acceleration.y = 0f;
-
+		this.max_vel = 5f;
 
 	}
 
@@ -142,7 +154,7 @@ public class Ball
 
 		r.x += this.velocity.x;
 
-		// bouce off walls
+		// bounce off walls
 		for (Wall wall : this.board.walls.getBlocks())
 		{
 			if (r.overlaps(wall.getBounds()))
@@ -160,10 +172,6 @@ public class Ball
 					this.velocity.y = -this.velocity.y;
 					this.acceleration.y = this.direction_y * 1f;
 				}
-				else
-				{
-					//this.acceleration.y -= ACCELERATION;
-				}
 				break;
 			}
 			else
@@ -179,25 +187,24 @@ public class Ball
 			if (r.overlaps(brick.getBounds()) && !brick.isDestroyed())
 			{
 				brick.setDestroyed(true);
-				this.board.player_score += 100;
+				this.max_vel += .5f;
+				this.board.player_score += 100 * this.max_vel;
 
 				this.sound.play(1f);
 
 				this.board.destroyedBricks = this.board.destroyedBricks + 1;
 				this.direction_x *= 1;
-				//this.velocity.x = this.velocity.x;
 				this.acceleration.x = this.direction_x * this.velocity.x;
 
 				this.direction_y *= -1;
 				this.velocity.y = -this.velocity.y;
 				this.acceleration.y += this.direction_y;
 
-
 			}
 			else
 			{
-				this.acceleration.x = this.direction_x * 1f;
-				this.acceleration.y = this.direction_y * 1f;
+				this.acceleration.x = this.direction_x * this.ballSpeed;
+				this.acceleration.y = this.direction_y * this.ballSpeed;
 			}
 		}
 
@@ -226,21 +233,32 @@ public class Ball
 
 	private void capVelocity()
 	{
-		if(this.velocity.y > MAX_VEL)
+		if(this.velocity.y > this.max_vel)
 		{
-			this.velocity.y = MAX_VEL;
+			this.velocity.y = this.max_vel;
 		}
-		if(this.velocity.y < -MAX_VEL)
+		if(this.velocity.y < -this.max_vel)
 		{
-			this.velocity.y = -MAX_VEL;
+			this.velocity.y = -this.max_vel;
 		}
-		if(this.velocity.x > MAX_VEL)
+		if(this.velocity.x > this.max_vel)
 		{
-			this.velocity.x = MAX_VEL;
+			this.velocity.x = this.max_vel;
 		}
-		if(this.velocity.x < -MAX_VEL)
+		if(this.velocity.x < -this.max_vel)
 		{
-			this.velocity.x = -MAX_VEL;
+			this.velocity.x = -this.max_vel;
 		}
+	}
+
+	private void debugBall()
+	{
+		this.batch.begin();
+		this.font.setColor(Color.WHITE);
+		this.font.draw(this.batch, "Ball: ", 20f, 120f);
+		this.font.draw(this.batch, "velocity: " + this.velocity, 20f, 100f);
+		this.font.draw(this.batch, "position: " + this.position, 20f, 80f);
+		this.font.draw(this.batch, "acceleration: " + this.acceleration, 20f, 60f);
+		this.batch.end();
 	}
 }
