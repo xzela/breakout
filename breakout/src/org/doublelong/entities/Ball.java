@@ -54,6 +54,8 @@ public class Ball
 	private final SpriteBatch batch;
 	private final BitmapFont font;
 
+	private boolean debug = false;
+
 	private final Pool<Rectangle> rectPool = new Pool<Rectangle>() {
 		@Override
 		protected Rectangle newObject()
@@ -62,10 +64,11 @@ public class Ball
 		}
 	};
 
-	public Ball(Board board)
+	public Ball(Board board, boolean debug)
 	{
 		this.board = board;
 		this.ballSpeed = SPEED;
+		this.debug = debug;
 
 		this.setActive(false);
 		this.position = this.board.paddle.getBallPosition();
@@ -126,7 +129,11 @@ public class Ball
 			this.bounds.setX(this.position.x);
 			this.bounds.setY(this.position.y);
 		}
-		this.debugBall();
+		if (this.debug)
+		{
+			this.debugBall();
+		}
+
 	}
 
 	public void reset()

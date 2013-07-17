@@ -36,7 +36,7 @@ public class Board
 	{
 		this.game = game;
 		this.paddle = new Paddle(this);
-		this.ball = new Ball(this);
+		this.ball = new Ball(this, false);
 		this.bricks = new BlockRenderer(this);
 		this.walls = new WallRenderer(this);
 
